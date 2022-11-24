@@ -8,19 +8,17 @@
 
 2. Models
 
-   Download allQnA_small.csv file from [here](https://drive.google.com/file/d/1z-oYQ1c_2mgcWGhdySfZ5vh2wlJldCQx/view?usp=share_link) and place the file parallel to ```app.py``` file.  
-<!-- Download 19.pth.tar file from [here](https://drive.google.com/file/d/1zbsVe2YqRxp1_z6TT5mhTjoUflLAjiOp/view?usp=sharing) and place the file parallel to ```app.py``` file.  
-Download 94_epoch_0.pth.tar file from [here](https://drive.google.com/file/d/1JBLdo0qvWoVSBpyr97d3z8VVdNz3cXHj/view?usp=sharing) and place the file parallel to ```app.py``` file.   -->
    Download 695_epoch_3.pth.tar file from [here](https://drive.google.com/file/d/1HRTsqrwKYWlKB_d0UzUxlzNo0KaVCDyw/view?usp=sharing) and place the file parallel to ```app.py``` file.  
 
+3. Data
+   
+   Download allQnA_small.csv file from [here](https://drive.google.com/file/d/1z-oYQ1c_2mgcWGhdySfZ5vh2wlJldCQx/view?usp=share_link) and place the file parallel to ```app.py``` file.  
+
+   The URLs of the Inshorts news articles are given in ```/other_codes/SentSimHi_BERT_spc/data/inshorts_urls.txt```. Code to scrape the articles is given as well.
 
 3. For the first time run, it will download some models first. Hence, might take some time.
 
-# 2. Run the flask app
-
-Once everything is set, run ```python app.py```. And it should work as a flask app.
-
-# 3. Run the chatbot
+# 2. Run the chatbot
 
 For the web interface (flask app) simply run the ```app.py``` file.
 
@@ -52,7 +50,7 @@ Watch this video (part1+2) if you get stuch anywhere (for twilio part).
 
 In order to deploy the bot on telegram, open the telegram_bot folder to see the instructions
 
-# 4. Sample Inputs
+# 3. Sample Inputs
 
 1. दूध किस पोजीशन में पिलाना चाहिए? (In what position should we feed milk (to an infant)?)
 
@@ -62,7 +60,7 @@ In order to deploy the bot on telegram, open the telegram_bot folder to see the 
 
  * Top suggestion by the chatbot is:  छोटे बच्चे रात को खेलते या सोते है और रात को खेलते या रोते है और दिन में वह बहुत सोते है तो इसलिए हम क्या करे (Infants sleeps a lot during the day but in the night they play or cry. What to do in this situation?)
 
-# 5. Methodology
+# 4. Methodology
 
 User (either ASHA worker or a young mother) gives us the query they want to ask. And we search the most similar question to their query from our database of question-answer pairs.  
 We have added four ways by which our website can fetch the most similar questions.
