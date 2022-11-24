@@ -4,30 +4,27 @@
 
    if some libraries gives you error like ```dataclasses``` then install them separately
 
+   You will have to install the indic-trans library by cloning their repo. Instructions [here](https://github.com/libindic/indic-trans).
+
 2. Models
 
-   Download allQnA_small.bin file from [here](https://drive.google.com/file/d/1sKMFs2Rl9uZ-dZEWNZNscEDUiZmGIvhO/view?usp=share_link) and place the file parallel to ```app.py``` file.  
+   Download allQnA_small.csv file from [here](https://drive.google.com/file/d/1z-oYQ1c_2mgcWGhdySfZ5vh2wlJldCQx/view?usp=share_link) and place the file parallel to ```app.py``` file.  
 <!-- Download 19.pth.tar file from [here](https://drive.google.com/file/d/1zbsVe2YqRxp1_z6TT5mhTjoUflLAjiOp/view?usp=sharing) and place the file parallel to ```app.py``` file.  
 Download 94_epoch_0.pth.tar file from [here](https://drive.google.com/file/d/1JBLdo0qvWoVSBpyr97d3z8VVdNz3cXHj/view?usp=sharing) and place the file parallel to ```app.py``` file.   -->
-Download 695_epoch_3.pth.tar file from [here](https://drive.google.com/file/d/1HRTsqrwKYWlKB_d0UzUxlzNo0KaVCDyw/view?usp=sharing) and place the file parallel to ```app.py``` file.  
+   Download 695_epoch_3.pth.tar file from [here](https://drive.google.com/file/d/1HRTsqrwKYWlKB_d0UzUxlzNo0KaVCDyw/view?usp=sharing) and place the file parallel to ```app.py``` file.  
 
 
 3. For the first time run, it will download some models first. Hence, might take some time.
 
 # 2. Run the flask app
 
-~Entire project relies on quillpad docker image to transcribe Hindi written in Roman script (_mera naam_) to Hindi written in Devnagri script (मेरा नाम). Hence, if your expected input is Hindi in Roman text, then run the docker image before you run flask app.~
-
-UPDATE: we have used [indic-trans](https://github.com/libindic/indic-trans) for the same now. It gave better results. So no need to run the docker now.
-
-<!-- ## 2.1 Run Docker (Outdated)
-
-- Install docker first and then open a separate bash window. Run ```./server/launch.sh```. Give necessary permissions if needed.  
-- Instead of a separate bash window, you can also run the docker in [detached mode](https://www.tecmint.com/run-docker-container-in-background-detached-mode/). Your choice. -->
-
 Once everything is set, run ```python app.py```. And it should work as a flask app.
 
 # 3. Run the chatbot
+
+For the web interface (flask app) simply run the ```app.py``` file.
+
+## a) Twilio/Whatsapp
 
 Open four terminal windows in the same directory
 
@@ -50,6 +47,8 @@ Paste this final URL to twilio webhook URL
 Watch this video (part1+2) if you get stuch anywhere (for twilio part).
 
 [![](http://img.youtube.com/vi/BKK5NMDC0fk/0.jpg)](http://www.youtube.com/watch?v=BKK5NMDC0fk "")
+
+## b) Telegram
 
 In order to deploy the bot on telegram, open the telegram_bot folder to see the instructions
 

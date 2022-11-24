@@ -67,7 +67,12 @@ database = {}
 traindb = []
 
 # stanza.download('hi')
-nlp = stanza.Pipeline('hi', use_gpu=True)
+try:
+	nlp = stanza.Pipeline('hi', use_gpu=True)
+except:
+	stanza.download('hi')
+	nlp = stanza.Pipeline('hi', use_gpu=True)
+
 print("\n\n\t\t=========== Stanza model loaded ===========")
 
 
@@ -285,7 +290,7 @@ def add_header(response):
 @app.route('/')
 def hello_world():
 	# df = pd.read_excel('subsetQnA.xlsx')
-	df = pd.read_csv('allQnA.csv')
+	df = pd.read_csv('allQnA_small.csv')
 	df = df[['Question','Answer']]
 	# df = df[:10]
 	# file = open('q.txt','r')
