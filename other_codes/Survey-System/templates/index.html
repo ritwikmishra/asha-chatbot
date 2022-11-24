@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en-ca">
+<head>
+  <meta charset="utf-8">
+
+  <meta charset="utf-8">
+    <!-- site metas -->
+    <title>ASHA</title>
+    <link rel="shortcut icon" type="image/png" href="static/images/f16x16.png"/>
+
+<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  /*padding: 18px;
+  width: 100%;*/
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  /*content: "\2212";*/
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #f1f1f1;
+}
+table {
+  border-collapse: collapse;
+  /*table-layout:fixed;*/
+}
+.outlined {
+  border: 2px solid red;
+}
+.squeeze{
+  width: 10%
+}
+.wide{
+  width: 30%;
+}
+.wide1{
+  width: 30%;
+  background-color: #ffffe6;
+}
+.wide2{
+  width: 30%;
+  background-color: #ccffe6;
+}
+.wide3{
+  width: 30%;
+  background-color: #e6e6ff;
+}
+input[type=radio] {
+    border: 0px;
+    width: 100%;
+    height: 2em;
+    -ms-transform: scale(2.0); /* IE 9 */
+    -webkit-transform: scale(2.0); /* Chrome, Safari, Opera */
+    transform: scale(2.0);
+}
+</style>
+</head>
+<body class="container-fluid">
+  <p style="font-size:20px; color:red;"> {{data.msg}} </p>
+<label>Unique ID : {{ data.userid }}</label>
+
+<br>
+<!-- <br> Model name: {{ data.db.ques[0]["Model_name"] }} -->
+<br>
+<b>Instructions</b>
+<br>
+There are 3 Pages on your screen. Each page contains a question at the top which was asked by a real ASHA worker. Below it, you will find three questions (suggested by our Ai model) as the most similar to the question asked by ASHA. Below the three questions, you will see answer to each of them. Below it, you have to mark how good are the suggested question-answer pair.<br> You have to do this for each page.
+<br>
+<form id="qform" action="/" method="post" > 
+    <br> Category: {{data.db.ques[0]['Category']}} || Page number: {{data.db.ques[0]['Page']}} / 1245
+    <fieldset {% if 0 in data.err %} style="border-color: red;" {% else %} {% endif %} >
+      <legend align="center">ASHA asked : <b> {{ data.db.ques[0]["User_Question"] }} </b></legend>
+       <table style="width:100%">
+        <colgroup>
+          <col class='squeeze'>
+          <col class="wide1 {{'outlined' if 1 in data.err}}">
+          <col class="wide {{'outlined' if 2 in data.err}}">
+          <col class="wide1 {{'outlined' if 3 in data.err}}">
+        </colgroup>
+          <tr>
+            <th>Suggested question</th>
+            <th>{{data.db.ques[0]["OPTION_1"]}}</th>
+            <th>{{data.db.ques[0]["OPTION_2"]}}</th>
+            <th>{{data.db.ques[0]["OPTION_3"]}}</th>
+          </tr>
+          <tr>
+            <td>Answer</td>
+            <td><p class="collapsible">Click here to show answer</p><div class="content"><p>{{ data.db.ques[0]["ANSWER_1"] }}</p></div> </td>
+            <td><p class="collapsible">Click here to show answer</p><div class="content"><p>{{ data.db.ques[0]["ANSWER_2"] }}</p></div> </td>
+            <td><p class="collapsible">Click here to show answer</p><div class="content"><p>{{ data.db.ques[0]["ANSWER_3"] }}</p></div> </td>
+          </tr>
+          <tr>
+            <td>The suggested question matches the asked question and provides the correct answer.</td>
+            <td><label><input type="radio" name="{{ data.db.ans[0]['Ques'] }}"  value="1" {{'checked' if data.db.ans[0]['Ans']==1}}><!-- (सुझाया गया प्रश्न, पूछे गए प्रश्न से मेल खाता है और सही उत्तर भी प्रदान करता है।) --></label></td>
+            <td><label><input type="radio" name="{{ data.db.ans[1]['Ques'] }}"  value="1" {{'checked' if data.db.ans[1]['Ans']==1}}></label></td>
+            <td><label><input type="radio" name="{{ data.db.ans[2]['Ques'] }}"  value="1" {{'checked' if data.db.ans[2]['Ans']==1}}></label></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style="text-align: center;">---------</td>
+            <td style="text-align: center;">---------</td>
+            <td style="text-align: center;">---------</td>
+          </tr>
+            <tr>
+              <td>The suggested question only partially matches with the asked question and provides a partial answer.</td>
+              <td><label><input type="radio" name="{{ data.db.ans[0]['Ques'] }}"  value="2" {{'checked' if data.db.ans[0]['Ans']==2}}><!-- (सुझाया गया प्रश्न, पूछे गए प्रश्न के साथ केवल थोड़ा सा मेल खाता है और आंशिक उत्तर प्रदान करता है।) --></label></td>
+              <td><label><input type="radio" name="{{ data.db.ans[1]['Ques'] }}"  value="2" {{'checked' if data.db.ans[1]['Ans']==2}}></label></td>
+              <td><label><input type="radio" name="{{ data.db.ans[2]['Ques'] }}"  value="2" {{'checked' if data.db.ans[2]['Ans']==2}}></label></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style="text-align: center;">---------</td>
+            <td style="text-align: center;">---------</td>
+            <td style="text-align: center;">---------</td>
+          </tr>
+          <tr>
+            <td>The suggested question does not match with the asked question and does not provide the answer.</td>
+            <td><label><input type="radio" name="{{ data.db.ans[0]['Ques'] }}"  value="3" {{'checked' if data.db.ans[0]['Ans']==3}}> <!-- (सुझाया गया प्रश्न पूछे गए प्रश्न से मेल नहीं खाता है और उत्तर प्रदान नहीं करता है।) --> </label></td>
+            <td><label><input type="radio" name="{{ data.db.ans[1]['Ques'] }}"  value="3" {{'checked' if data.db.ans[1]['Ans']==3}}></label></td>
+            <td><label><input type="radio" name="{{ data.db.ans[2]['Ques'] }}"  value="3" {{'checked' if data.db.ans[2]['Ans']==3}}></label></td>
+          </tr>
+       </table> 
+    </fieldset>
+    
+    <br> Category: {{data.db.ques[1]['Category']}} || Page number: {{data.db.ques[1]['Page']}} / 1245
+    <fieldset {% if 0 in data.err %} style="border-color: red;" {% else %} {% endif %} >
+      <legend align="center">ASHA asked : <b> {{ data.db.ques[1]["User_Question"] }} </b></legend>
+       <table style="width:100%">
+        <colgroup>
+          <col class='squeeze'>
+          <col class="wide2 {{'outlined' if 4 in data.err}}">
+          <col class="wide {{'outlined' if 5 in data.err}}">
+          <col class="wide2 {{'outlined' if 6 in data.err}}">
+        </colgroup>
+          <tr>
+            <th>Suggested question</th>
+            <th>{{data.db.ques[1]["OPTION_1"]}}</th>
+            <th>{{data.db.ques[1]["OPTION_2"]}}</th>
+            <th>{{data.db.ques[1]["OPTION_3"]}}</th>
+          </tr>
+          <tr>
+            <td>Answer</td>
+            <td><p class="collapsible">Click here to show answer</p><div class="content"><p>{{ data.db.ques[1]["ANSWER_1"] }}</p></div> </td>
+            <td><p class="collapsible">Click here to show answer</p><div class="content"><p>{{ data.db.ques[1]["ANSWER_2"] }}</p></div> </td>
+            <td><p class="collapsible">Click here to show answer</p><div class="content"><p>{{ data.db.ques[1]["ANSWER_3"] }}</p></div> </td>
+          </tr>
+          <tr>
+            <td>The suggested question matches the asked question and provides the correct answer.</td>
+            <td><label><input type="radio" name="{{ data.db.ans[3]['Ques'] }}"  value="1" {{'checked' if data.db.ans[3]['Ans']==1}}><!-- (सुझाया गया प्रश्न, पूछे गए प्रश्न से मेल खाता है और सही उत्तर भी प्रदान करता है।) --></label></td>
+            <td><label><input type="radio" name="{{ data.db.ans[4]['Ques'] }}"  value="1" {{'checked' if data.db.ans[4]['Ans']==1}}></label></td>
+            <td><label><input type="radio" name="{{ data.db.ans[5]['Ques'] }}"  value="1" {{'checked' if data.db.ans[5]['Ans']==1}}></label></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style="text-align: center;">---------</td>
+            <td style="text-align: center;">---------</td>
+            <td style="text-align: center;">---------</td>
+          </tr>
+            <tr>
+              <td>The suggested question only partially matches with the asked question and provides a partial answer.</td>
+              <td><label><input type="radio" name="{{ data.db.ans[3]['Ques'] }}"  value="2" {{'checked' if data.db.ans[3]['Ans']==2}}> <!-- (सुझाया गया प्रश्न, पूछे गए प्रश्न के साथ केवल थोड़ा सा मेल खाता है और आंशिक उत्तर प्रदान करता है।) --></label></td>
+              <td><label><input type="radio" name="{{ data.db.ans[4]['Ques'] }}"  value="2" {{'checked' if data.db.ans[4]['Ans']==2}}></label></td>
+              <td><label><input type="radio" name="{{ data.db.ans[5]['Ques'] }}"  value="2" {{'checked' if data.db.ans[5]['Ans']==2}}></label></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style="text-align: center;">---------</td>
+            <td style="text-align: center;">---------</td>
+            <td style="text-align: center;">---------</td>
+          </tr>
+          <tr>
+            <td>The suggested question does not match with the asked question and does not provide the answer.</td>
+            <td><label><input type="radio" name="{{ data.db.ans[3]['Ques'] }}"  value="3" {{'checked' if data.db.ans[3]['Ans']==3}}> <!-- (सुझाया गया प्रश्न पूछे गए प्रश्न से मेल नहीं खाता है और उत्तर प्रदान नहीं करता है।) --> </label></td>
+            <td><label><input type="radio" name="{{ data.db.ans[4]['Ques'] }}"  value="3" {{'checked' if data.db.ans[4]['Ans']==3}}></label></td>
+            <td><label><input type="radio" name="{{ data.db.ans[5]['Ques'] }}"  value="3" {{'checked' if data.db.ans[5]['Ans']==3}}></label></td>
+          </tr>
+       </table> 
+    </fieldset>
+
+    <br> Category: {{data.db.ques[2]['Category']}} || Page number: {{data.db.ques[2]['Page']}} / 1245
+    <fieldset {% if 0 in data.err %} style="border-color: red;" {% else %} {% endif %} >
+      <legend align="center">ASHA asked : <b> {{ data.db.ques[2]["User_Question"] }} </b></legend>
+       <table style="width:100%">
+        <colgroup>
+          <col class='squeeze'>
+          <col class="wide3 {{'outlined' if 7 in data.err}}">
+          <col class="wide {{'outlined' if 8 in data.err}}">
+          <col class="wide3 {{'outlined' if 9 in data.err}}">
+        </colgroup>
+          <tr>
+            <th>Suggested question</th>
+            <th>{{data.db.ques[2]["OPTION_1"]}}</th>
+            <th>{{data.db.ques[2]["OPTION_2"]}}</th>
+            <th>{{data.db.ques[2]["OPTION_3"]}}</th>
+          </tr>
+          <tr>
+            <td>Answer</td>
+            <td><p class="collapsible">Click here to show answer</p><div class="content"><p>{{ data.db.ques[2]["ANSWER_1"] }}</p></div> </td>
+            <td><p class="collapsible">Click here to show answer</p><div class="content"><p>{{ data.db.ques[2]["ANSWER_2"] }}</p></div> </td>
+            <td><p class="collapsible">Click here to show answer</p><div class="content"><p>{{ data.db.ques[2]["ANSWER_3"] }}</p></div> </td>
+          </tr>
+          <tr>
+            <td>The suggested question matches the asked question and provides the correct answer.</td>
+            <td><label><input type="radio" name="{{ data.db.ans[6]['Ques'] }}"  value="1" {{'checked' if data.db.ans[6]['Ans']==1}}> <!-- (सुझाया गया प्रश्न, पूछे गए प्रश्न से मेल खाता है और सही उत्तर भी प्रदान करता है।) --></label></td>
+            <td><label><input type="radio" name="{{ data.db.ans[7]['Ques'] }}"  value="1" {{'checked' if data.db.ans[7]['Ans']==1}}></label></td>
+            <td><label><input type="radio" name="{{ data.db.ans[8]['Ques'] }}"  value="1" {{'checked' if data.db.ans[8]['Ans']==1}}></label></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style="text-align: center;">---------</td>
+            <td style="text-align: center;">---------</td>
+            <td style="text-align: center;">---------</td>
+          </tr>
+            <tr>
+              <td>The suggested question only partially matches with the asked question and provides a partial answer.</td>
+              <td><label><input type="radio" name="{{ data.db.ans[6]['Ques'] }}"  value="2" {{'checked' if data.db.ans[6]['Ans']==2}}><!-- (सुझाया गया प्रश्न, पूछे गए प्रश्न के साथ केवल थोड़ा सा मेल खाता है और आंशिक उत्तर प्रदान करता है।) --></label></td>
+              <td><label><input type="radio" name="{{ data.db.ans[7]['Ques'] }}"  value="2" {{'checked' if data.db.ans[7]['Ans']==2}}></label></td>
+              <td><label><input type="radio" name="{{ data.db.ans[8]['Ques'] }}"  value="2" {{'checked' if data.db.ans[8]['Ans']==2}}></label></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td style="text-align: center;">---------</td>
+            <td style="text-align: center;">---------</td>
+            <td style="text-align: center;">---------</td>
+          </tr>
+          <tr>
+            <td>The suggested question does not match with the asked question and does not provide the answer.</td>
+            <td><label><input type="radio" name="{{ data.db.ans[6]['Ques'] }}"  value="3" {{'checked' if data.db.ans[6]['Ans']==3}}><!-- (सुझाया गया प्रश्न पूछे गए प्रश्न से मेल नहीं खाता है और उत्तर प्रदान नहीं करता है।) --> </label></td>
+            <td><label><input type="radio" name="{{ data.db.ans[7]['Ques'] }}"  value="3" {{'checked' if data.db.ans[7]['Ans']==3}}></label></td>
+            <td><label><input type="radio" name="{{ data.db.ans[8]['Ques'] }}"  value="3" {{'checked' if data.db.ans[8]['Ans']==3}}></label></td>
+          </tr>
+       </table> 
+    </fieldset>
+    
+    <br>
+
+    <input type="hidden" name="userid"  value="{{ data.userid }}" >
+    <input id="page" type="hidden" name="page"  value="{{data.db.ques[2]['Page']}}" >
+    <div id="fixedbutton1">
+    <input  class="button" type = "submit" name="submit" value = "Log Out" />
+    <input  class="button" type = "submit" name="prev" value = "Prev Page" />
+    <input  class="button" type = "submit" name="next" value = "Next Page" />
+  </div>
+  </form>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+  });
+}
+</script>
+
+</body>
+
+</html>

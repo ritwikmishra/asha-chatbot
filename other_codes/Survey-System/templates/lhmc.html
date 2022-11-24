@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en-ca">
+<head>
+  <meta charset="utf-8">
+
+  <meta charset="utf-8">
+    <!-- site metas -->
+    <title>ASHA</title>
+    <link rel="shortcut icon" type="image/png" href="static/images/f16x16.png"/>
+
+<style>
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  /*padding: 18px;
+  width: 100%;*/
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  /*content: "\2212";*/
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #f1f1f1;
+}
+table {
+  border-collapse: collapse;
+  /*table-layout:fixed;*/
+}
+.outlined {
+  border: 2px solid red;
+}
+.squeeze{
+  width: 10%
+}
+.wide{
+  width: 30%;
+}
+.wide1{
+  width: 30%;
+  background-color: #ffffe6;
+}
+.wide2{
+  width: 30%;
+  background-color: #ccffe6;
+}
+.wide3{
+  width: 30%;
+  background-color: #e6e6ff;
+}
+</style>
+</head>
+<body class="container-fluid">
+  <p style="font-size:20px; color:red;"> {{data.msg}} </p>
+<label>Unique ID : {{ data.userid }}</label>
+
+<br>
+<!-- <br> Model name: {{ data.db.ques["Model_name"] }} -->
+<br>
+<form id="qform" action="/" method="post" > 
+    <br> Category: {{data.db.ques['Category']}} || Question number: {{data.db.ans['idx']+1}}
+    <br><br>
+    <fieldset style="background-color: {{data.db.ans.c}}">
+      <legend align="center">ASHA asked : <b> {{ data.db.ques["User_Question"] }} </b></legend>
+      <legend>Suggested question:<br> {{ data.db.ques["OPTION"] }}</legend>
+      <p class="collapsible">Open Answer</p>
+      <div class="content">
+        <p> {{ data.db.ques["ANSWER"] }} </p>
+      </div>
+
+      <label style="color: {{'grey' if data.db.ans['Ans']==-1}}">
+      <input type="radio" name="LHMCanswer"  value="1" {{'checked' if data.db.ans['fAns']==1}} {{'disabled' if data.db.ans['Ans']==-1}}>
+      The suggested question matches the asked question and provides the correct answer.</label><br><br>
+    
+      <label style="color: {{'grey' if data.db.ans['Ans']==-2}}">
+      <input type="radio" name="LHMCanswer"  value="2" {{'checked' if data.db.ans['fAns']==2}} {{'disabled' if data.db.ans['Ans']==-2}}>
+      The suggested question only partially matches with the asked question and provides a partial answer.</label><br><br>
+      
+      <label style="color: {{'grey' if data.db.ans['Ans']==-3}}">
+      <input type="radio" name="LHMCanswer"  value="3" {{'checked' if data.db.ans['fAns']==3}} {{'disabled' if data.db.ans['Ans']==-3}}>
+      The suggested question does not match with the asked question and does not provide the answer.</label><br><br>
+    </fieldset>
+
+    </fieldset>
+    
+    <br>
+    <input type="hidden" name="userid"  value="{{ data.userid }}" >
+    <input id="page" type="hidden" name="page"  value="{{data.db.ans['idx']}}" >
+    <div id="fixedbutton1">
+    <input  class="button" type = "submit" name="submit" value = "Log Out" />
+    <input  class="button" type = "submit" name="prev" value = "Prev Page" />
+    <input  class="button" type = "submit" name="next" value = "Next Page" />
+  </div>
+  <br>
+<b>Instructions</b>
+<br>
+> This page contains a question at the top which was asked by a real ASHA worker.
+<br>
+> Below it, you will find question (suggested by our Ai model) as the most similar to the question asked by ASHA. 
+<br>
+> Below the suggested question, you will see the answer.
+<br>
+> Below the answer, you will three options in which only two are clickable. Our annotators were conflicted between those two items. Your decision will be acting as a tie breaker.
+<br>
+> Select one option from the two clickables.
+<br>
+> You have to do this for each page.
+  </form>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+  });
+}
+</script>
+
+</body>
+
+</html>

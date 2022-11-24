@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<title>Asha</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="shortcut icon" type="image/png" href="static/images/f16x16.png"/>
+<style>
+      body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+
+      body, html {
+        height: 100%;
+        line-height: 1.8;
+      }
+
+      /* Full height image header */
+      .bgimg-1 {
+        background-position: center;
+        background-size: cover;
+        /*background-image: url("static/images/kg4.jpg");*/
+        min-height: 100%;
+      }
+
+      .w3-bar .w3-button {
+        padding: 16px;
+      }
+
+      #data_div{
+        font-size:  20px;
+        margin-left: 10%;
+        margin-right: 10%;
+        overflow: scroll;
+        max-height: 500px;
+
+      }
+
+      #loadingImage {
+    max-width: 100%;
+    height: auto;
+    width: auto\9; /* ie8 */
+}
+
+</style>
+
+<script type="text/javascript">
+  function myFunction() {
+    // alert("here");
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    var x = document.getElementById("loading");
+    x.style.display = "block";
+
+    var timeLeft = 1;
+    var elem = document.getElementById('timer');
+    
+    var timerId = setInterval(countdown, 1000);
+    
+    function countdown() {
+      if (timeLeft == 0) {
+        clearTimeout(timerId);
+        // doSomething();
+      } else {
+        elem.innerHTML = timeLeft + ' seconds passed';
+        timeLeft++;
+      }
+    }
+  }
+
+</script>
+<body>
+
+<div id="loading" style="display: none; height: 100%">
+  <center>
+    <br><br><br>
+  <img src="static/images/gears.gif" id="loadingImage">
+  <br>
+  <span>Generally takes 30 seconds</span>
+  <br>
+  <span id="timer"></span>
+  <br>
+  </center>
+</div>  
+  <!-- <form action = "/push_article" method = "post"> -->
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-card" id="myNavbar">
+    <img src="static/images/melange.png" alt="logo_melange" height="50">
+    <img src="static/images/midas_logo.jpg" alt="logo_midas" height="50">
+    <a href="/" class="w3-bar-item w3-button w3-wide">Home</a>
+    
+    <div class="w3-right w3-hide-small">
+      <!-- <a href="#home" class="w3-bar-item w3-button">EXPLORE</a> -->
+      <!-- <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a> -->
+    </div>
+
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
+      <i class="fa fa-bars"></i>
+    </a>
+  </div>
+</div>
+
+<!-- Sidebar on small screens when clicking the menu icon -->
+<nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
+ <!--  <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">EXPLORE</a>
+  <a href="#team" onclick="w3_close()" class="w3-bar-item w3-button">TEAM</a> -->
+</nav>
+
+
+
+<!-- About Section -->
+<div class="w3-container" style="padding:50px 16px" id="about" >
+  <h3 class="w3-center"><br><br><b>Question Answer System For Asha Workers: first prototype</b></h3>
+
+  <form action = "/enter_query" method = "post" enctype = "multipart/form-data">
+  <center><p><b>Enter Question in Hindi language using either Devnagri script or Latin (English) script<br>(हिंदी में सवाल पूछें। सवाल लिखने के लिए आप देवनागरी लिपि या इंग्लिश लिपि का प्रयोग कर सकते है।)</b>
+    <br>To type in Hindi <a href="https://www.google.com/intl/hi/inputtools/try/" target="_blank">Click Here</a> and then copy paste below<br>(देवनागरी में लिखने के लिए <a href="https://www.google.com/intl/hi/inputtools/try/" target="_blank">यहाँ क्लिक करें।</a> वहां से कॉपी करके, नीचे पेस्ट कर देना)</p>
+    <p>Ask one question related to maternal and natal health only<br>(केवल मातृ और प्रसव स्वास्थ्य से संबंधित प्रश्न ही पूछें)<br>We will search our database for a similar question<br>(हम अपने डेटा रिकॉर्ड में आपके सवाल से मिलता-झूलता सवाल ढूंढेंगे)</p>
+  <textarea name="question_text" cols="50"></textarea> <br>
+  <p><input type = "submit" value = "Submit" onclick="myFunction()"/> <input type="reset"></p>
+  {% if (q|length != 0) %}
+  <p>Last Question: {{q}} </p>
+  {% endif %}
+  </center>
+
+</div>
+
+<!-- Header with full-height image -->
+<div id="data_div">
+  <!-- <center>Data Records</center> -->
+  <table border = 1 style="text-align:center">
+
+    <tr><th>Data Records</th></tr>
+
+    {% for x in range(df|length) %}
+    <tr><td><b>सवाल#{{x+1}}</b> {{df.iloc[x][0]}}  {% if(df.columns|length == 3) %} (Similarity: {{(df.iloc[x][2]*100)|round(2)}} %) {% endif %}</td></tr>
+    <tr><td><b>जवाब:</b> {{df.iloc[x][1]}} </td> </tr>
+    <tr><td>...</td></tr>
+    {% endfor %}    
+
+<!-- 
+    <tr>
+      <th>Index</th>
+      <th>Question (सवाल)</th>
+      <th>Answer (जवाब)</th>
+      {% if(df.columns|length == 3) %}
+      <th>Similarity</th>
+      {% endif %}
+    </tr>
+    {% for x in range(df|length) %}
+      <tr>
+        <td> {{x+1}} </td>
+        <td> {{df.iloc[x][0]}} </td>
+        <td> {{df.iloc[x][1]}} </td>
+        {% if(df.columns|length == 3) %}
+        <td> {{(df.iloc[x][2]*100)|round(2)}} % </td>
+        {% endif %}
+      </tr>
+      {% endfor %} -->
+
+  </table>
+</div> 
+
+<!-- Promo Section - "We know design" -->
+<div class="w3-container w3-light-grey" style="padding:128px 16px">
+  <div class="w3-row-padding">
+    <div class="w3-col m6">
+      <p style="text-align:justify;"><b>MIDAS</b> is a group of researchers at IIIT-Delhi who study, analyze, and build different multimedia systems for society leveraging multimodal information. MIDAS stands for <b>Multimodal Digital Media Analysis Lab</b> and it is founded by Dr. Rajiv Ratn Shah. Dr. Shah is assistant professor in the department of Computer Science and Engineering (jointly appointed with the department of Human Centered Design) at IIIT-Delhi. Our work at MIDAS includes Machine Learning, Multimedia Content Processing, Natural Language Processing, Image Processing, Multimodal Computing, Data Science, Social Media Computing, and the Internet of Things. We believe in multidisciplinary collabrative research and work closely with eminent researchers from National University of Singapore (NUS), National Institute of Informatics (NII), Nanyang Technological University (NTU), Bloomberg, Arkana Lab, etc.</p>
+    </div>
+    <div class="w3-col m6">
+      <img class="w3-image w3-round-large" src="static/images/midas_logo.jpg" alt="Buildings" width="700" height="394">
+    </div>
+  </div>
+</div>
+
+<!-- Team Section -->
+
+<!-- Modal for full size images on click-->
+<div id="modal01" class="w3-modal w3-black" onclick="this.style.display='none'">
+  <span class="w3-button w3-xxlarge w3-black w3-padding-large w3-display-topright" title="Close Modal Image">×</span>
+  <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
+    <img id="img01" class="w3-image">
+    <p id="caption" class="w3-opacity w3-large"></p>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-64">
+  <a href="#about" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+  <p>CopyRight of <a href="http://midas.iiitd.edu.in/" title="MIDAS@IIIT-Delhi" target="_blank" class="w3-hover-text-green">MIDAS@IIIT-Delhi, India</a></p>
+</footer>
+ 
+<script>
+// Modal Image Gallery
+function onClick(element) {
+  document.getElementById("img01").src = element.src;
+  document.getElementById("modal01").style.display = "block";
+  var captionText = document.getElementById("caption");
+  captionText.innerHTML = element.alt;
+}
+
+
+// Toggle between showing and hiding the sidebar when clicking the menu icon
+var mySidebar = document.getElementById("mySidebar");
+
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+  } else {
+    mySidebar.style.display = 'block';
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+    mySidebar.style.display = "none";
+}
+</script>
+
+{% with messages = get_flashed_messages() %}
+ {% if messages %}
+   <script> alert( "{{messages[0]}}" )</script>
+ {% endif %}
+{% endwith %}
+<!-- </form> -->
+</body>
+
+</html>
