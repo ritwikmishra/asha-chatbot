@@ -74,3 +74,25 @@ We have added four ways by which our website can fetch the most similar question
 4. Uses BERT sentence embeddings and cosine similarity. This is the default one. But to explicitly select this way, start your query with 'BERT_cos'.
 
 We have kept four ways, so that we can test their effectiveness using user feedback. By default, the chatbot uses an ensemble method of the last three methods.
+
+# 5. Citation
+
+```
+@inproceedings{mishra-etal-2023-hindi,
+    title = "Hindi Chatbot for Supporting Maternal and Child Health Related Queries in Rural India",
+    author = "Mishra, Ritwik  and
+      Singh, Simranjeet  and
+      Kaur, Jasmeet  and
+      Singh, Pushpendra  and
+      Shah, Rajiv",
+    booktitle = "Proceedings of the 5th Clinical Natural Language Processing Workshop",
+    month = jul,
+    year = "2023",
+    address = "Toronto, Canada",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.clinicalnlp-1.9",
+    doi = "10.18653/v1/2023.clinicalnlp-1.9",
+    pages = "69--77",
+}
+
+```
