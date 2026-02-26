@@ -63,7 +63,7 @@ nbconvert==7.17.0
 nest-asyncio==1.4.3
 nltk==3.5
 notebook==6.2.0
-numexpr==2.7.1
+numexpr==2.8.5
 numpy==1.19.2
 nvidia-ml-py3==7.352.0
 openpyxl==3.0.3
